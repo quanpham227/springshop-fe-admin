@@ -4,6 +4,9 @@ import withRouter from '../../helpers/withRouter';
 import ContentHeader from '../common/ContentHeader';
 
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+
+import { getCategories, clearCategoryState } from '../../redux/actions/categoryAction';
 
 const { Column, ColumnGroup } = Table;
 
@@ -11,18 +14,20 @@ class ListCategory extends Component {
     constructor() {
         super();
         this.state = {
-            dataSource: [
-                { categoryId: 1, name: 'Computer', status: 0 },
-                { categoryId: 1, name: 'Computer', status: 0 },
-                { categoryId: 2, name: 'Laptop', status: 1 },
-                { categoryId: 3, name: 'Usb', status: 0 },
-                { categoryId: 4, name: 'PC', status: 1 },
-                { categoryId: 5, name: 'Mouse', status: 0 },
-                { categoryId: 6, name: 'Server', status: 1 },
-            ],
             category: {},
         };
     }
+
+    componentDidMount = () => {
+        this.props.getCategories();
+        console.log('did mount');
+    };
+
+    componentWillUnmount = () => {
+        this.props.clearCategoryState();
+        console.log('will  unmount');
+    };
+
     editCategory = (category) => {
         console.log(category);
     };
@@ -47,19 +52,21 @@ class ListCategory extends Component {
     };
     render() {
         const { navigate } = this.props.router;
+
+        const { categories } = this.props;
         return (
             <>
                 <ContentHeader navigate={navigate} title="List Categories" className="site-page-header"></ContentHeader>
-                <Table dataSource={this.state.dataSource} size="small" rowKey="categoryId">
+                <Table dataSource={categories.categories} size="small" rowKey="id">
                     <ColumnGroup>
                         <Column
                             title="Category ID"
-                            key="categoryId"
-                            dataIndex="categoryId"
+                            key="categories.id"
+                            dataIndex="id"
                             width={40}
                             align="center"
                         ></Column>
-                        <Column title="Name" key="name" dataIndex="name"></Column>
+                        <Column title="Name" key="categories.name" dataIndex="name"></Column>
                         <Column
                             title="Status"
                             key="status"
@@ -68,7 +75,7 @@ class ListCategory extends Component {
                             render={(_, { status }) => {
                                 let color = 'volcano';
                                 let name = 'In-visible';
-                                if (status == 0) {
+                                if (status === 0) {
                                     color = 'green';
                                     name = 'visible';
                                 }
@@ -110,4 +117,13 @@ class ListCategory extends Component {
     }
 }
 
-export default withRouter(ListCategory);
+const mapStateToProps = (state) => ({
+    categories: state.categoryReducer.categories,
+});
+
+const mapDispatchToProps = {
+    getCategories,
+    clearCategoryState,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListCategory));
