@@ -1,14 +1,14 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import DasboardPage from './pages/DasboardPage';
+import DashboardPage from './pages/DashboardPage';
 import store from './redux/store';
 
 function App() {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <DasboardPage></DasboardPage>
+                <DashboardPage></DashboardPage>
             </BrowserRouter>
         </Provider>
     );

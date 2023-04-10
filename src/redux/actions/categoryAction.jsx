@@ -1,11 +1,23 @@
 import CategoryService from '../../services/categoryService';
-import { CATEGORIES_SET, CATEGORY_SET, CATEGORY_STATE_CLEAR } from './actionTypes';
+import {
+    CATEGORIES_SET,
+    CATEGORY_SET,
+    CATEGORY_STATE_CLEAR,
+    COMMON_ERROR_SET,
+    COMMON_LOADING_SET,
+    COMMON_MESSAGE_SET,
+} from './actionTypes';
 
 export const insertCategory = (category, navigate) => async (dispatch) => {
     const service = new CategoryService();
 
     try {
         console.log('Insert Category');
+
+        dispatch({
+            type: COMMON_LOADING_SET,
+            payload: true,
+        });
 
         const response = await service.insertCategory(category);
 
@@ -14,12 +26,29 @@ export const insertCategory = (category, navigate) => async (dispatch) => {
                 type: CATEGORY_SET,
                 payload: response.data,
             });
+            dispatch({
+                type: COMMON_MESSAGE_SET,
+                payload: 'Category is saved',
+            });
+        } else {
+            dispatch({
+                type: COMMON_ERROR_SET,
+                payload: response.message,
+            });
         }
 
         console.log(response);
     } catch (error) {
-        console.log('error' + error);
+        console.log(error);
+        dispatch({
+            type: COMMON_ERROR_SET,
+            payload: error.response.data ? error.response.data.message : error.message,
+        });
     }
+    dispatch({
+        type: COMMON_LOADING_SET,
+        payload: false,
+    });
     navigate('/categories/list');
 };
 
@@ -28,6 +57,10 @@ export const getCategories = () => async (dispatch) => {
 
     try {
         console.log('get categories');
+        dispatch({
+            type: COMMON_LOADING_SET,
+            payload: false,
+        });
         const response = await service.getCategories();
 
         console.log(response);
@@ -37,9 +70,21 @@ export const getCategories = () => async (dispatch) => {
                 type: CATEGORIES_SET,
                 payload: response.data,
             });
+        } else {
+            dispatch({
+                type: COMMON_ERROR_SET,
+                payload: response.message,
+            });
         }
     } catch (error) {
-        console.log(error);
+        dispatch({
+            type: COMMON_ERROR_SET,
+            payload: error.response.data ? error.response.data.message : error.message,
+        });
+        dispatch({
+            type: COMMON_LOADING_SET,
+            payload: false,
+        });
     }
 };
 export const clearCategoryState = () => async (dispatch) => {

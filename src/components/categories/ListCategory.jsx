@@ -1,4 +1,4 @@
-import { Button, Modal, Space, Table, Tag } from 'antd';
+import { Button, Modal, Skeleton, Space, Table, Tag } from 'antd';
 import React, { Component } from 'react';
 import withRouter from '../../helpers/withRouter';
 import ContentHeader from '../common/ContentHeader';
@@ -53,7 +53,20 @@ class ListCategory extends Component {
     render() {
         const { navigate } = this.props.router;
 
-        const { categories } = this.props;
+        const { categories, isLoading } = this.props;
+
+        if (isLoading) {
+            return (
+                <>
+                    <ContentHeader
+                        navigate={navigate}
+                        title="List Categories"
+                        className="site-page-header"
+                    ></ContentHeader>
+                    <Skeleton />
+                </>
+            );
+        }
         return (
             <>
                 <ContentHeader navigate={navigate} title="List Categories" className="site-page-header"></ContentHeader>
@@ -119,6 +132,7 @@ class ListCategory extends Component {
 
 const mapStateToProps = (state) => ({
     categories: state.categoryReducer.categories,
+    isLoading: state.commonReducer.isLoading,
 });
 
 const mapDispatchToProps = {

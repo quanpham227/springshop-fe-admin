@@ -1,6 +1,6 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Layout, Menu, Row, theme } from 'antd';
-import React, { useState } from 'react';
+import { Avatar, Col, Layout, Menu, message, Row, theme } from 'antd';
+import React, { useEffect, useState } from 'react';
 import {
     MdOutlineHome,
     MdCategory,
@@ -14,20 +14,39 @@ import {
     MdSupervisorAccount,
     MdLogout,
 } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import AddOrEditCategory from '../components/categories/AddOrEditCategory';
 import ListCategory from '../components/categories/ListCategory';
 import Home from '../components/home/Home';
+import { setError, setMessage } from '../redux/actions/commonAction';
 
 import './DashboardPage.css';
 
 const { Header, Sider, Content } = Layout;
 
-function DasboardPage() {
+function DashboardPage() {
     const [marginLeft, setMarginLeft] = useState(200);
     const [collapsed, setCollapsed] = useState(false);
 
     const navigate = useNavigate();
+
+    const msg = useSelector((state) => state.commonReducer.message);
+    const err = useSelector((state) => state.commonReducer.error);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (msg) {
+            dispatch(setMessage(''));
+            message.success(msg);
+        }
+
+        if (err) {
+            dispatch(setError(''));
+            message.error(err);
+        }
+    }, [msg, err]);
 
     const {
         token: { colorBgContainer },
@@ -165,4 +184,4 @@ function DasboardPage() {
     );
 }
 
-export default DasboardPage;
+export default DashboardPage;
