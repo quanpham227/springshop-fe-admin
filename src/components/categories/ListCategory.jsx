@@ -6,7 +6,7 @@ import ContentHeader from '../common/ContentHeader';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
-import { getCategories, clearCategoryState } from '../../redux/actions/categoryAction';
+import { getCategories, clearCategoryState, deleteCategory } from '../../redux/actions/categoryAction';
 
 const { Column, ColumnGroup } = Table;
 
@@ -25,14 +25,15 @@ class ListCategory extends Component {
 
     componentWillUnmount = () => {
         this.props.clearCategoryState();
-        console.log('will  unmount');
+        console.log('will unmount');
     };
 
     editCategory = (category) => {
         console.log(category);
     };
-    DeleteCategory = () => {
+    deleteCategory = () => {
         console.log(this.state.category);
+        this.props.deleteCategory(this.state.category.id);
     };
 
     openDeleteConfirmModal = (category) => {
@@ -45,7 +46,7 @@ class ListCategory extends Component {
             title: 'Confirm',
             icon: <ExclamationCircleOutlined />,
             content: message,
-            onOk: this.DeleteCategory,
+            onOk: this.deleteCategory,
             okText: 'Delete',
             cancelText: 'Cancel',
         });
@@ -138,6 +139,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     getCategories,
     clearCategoryState,
+    deleteCategory,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListCategory));
