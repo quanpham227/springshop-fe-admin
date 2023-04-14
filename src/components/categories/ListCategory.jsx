@@ -30,15 +30,29 @@ class ListCategory extends Component {
 
     editCategory = (category) => {
         console.log(category);
+        const { navigate } = this.props.router;
+        navigate('/categories/update/' + category.id);
     };
+
     deleteCategory = () => {
         console.log(this.state.category);
         this.props.deleteCategory(this.state.category.id);
     };
 
     openDeleteConfirmModal = (category) => {
-        this.setState({ ...this.state, category: category });
+        // this.setState({ ...this.state, category: category });
 
+        // console.log(category);
+        // const message = 'Do you want to delete the category ' + category.name;
+
+        // Modal.confirm({
+        //     title: 'Confirm',
+        //     icon: <ExclamationCircleOutlined />,
+        //     content: message,
+        //     onOk: this.deleteCategory,
+        //     okText: 'Delete',
+        //     cancelText: 'Cancel',
+        // });
         console.log(category);
         const message = 'Do you want to delete the category ' + category.name;
 
@@ -46,7 +60,13 @@ class ListCategory extends Component {
             title: 'Confirm',
             icon: <ExclamationCircleOutlined />,
             content: message,
-            onOk: this.deleteCategory,
+            onOk: () => {
+                this.props.deleteCategory(category.id);
+                this.setState({ category: {} });
+            },
+            onCancel: () => {
+                this.setState({ category: {} });
+            },
             okText: 'Delete',
             cancelText: 'Cancel',
         });
@@ -64,7 +84,7 @@ class ListCategory extends Component {
                         title="List Categories"
                         className="site-page-header"
                     ></ContentHeader>
-                    <Skeleton />
+                    <Skeleton active />
                 </>
             );
         }
@@ -89,7 +109,7 @@ class ListCategory extends Component {
                             render={(_, { status }) => {
                                 let color = 'volcano';
                                 let name = 'In-visible';
-                                if (status === 0) {
+                                if (status === 'Visible') {
                                     color = 'green';
                                     name = 'visible';
                                 }

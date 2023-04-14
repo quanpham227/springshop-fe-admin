@@ -15,10 +15,12 @@ const categoryReducer = (state = initialState, { type, payload }) => {
         case CATEGORY_DELETE:
             return {
                 ...state,
-                categories: Array.isArray(state.categories)
-                    ? state.categories.filter((item) => item.id !== payload)
-                    : [],
+                categories: state.categories.filter((item) => item.id !== payload),
+                // categories: Array.isArray(state.categories)
+                //     ? state.categories.filter((item) => item.id !== payload)
+                //     : [],
             };
+
         // lọc bỏ tất cả thành phần không thỏa mãn điều kiện id của thành phần đó khác với id truyền vào payload
 
         case CATEGORY_STATE_CLEAR:
