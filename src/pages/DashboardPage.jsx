@@ -19,6 +19,7 @@ import { Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import AddOrEditCategory from '../components/categories/AddOrEditCategory';
 import ListCategory from '../components/categories/ListCategory';
 import Home from '../components/home/Home';
+import ListManufacturers from '../components/manufacturers/ListManufacturers';
 import { setError, setMessage } from '../redux/actions/commonAction';
 
 import './DashboardPage.css';
@@ -96,36 +97,61 @@ function DashboardPage() {
                         },
                         {
                             key: '3',
+                            icon: <MdCategory />,
+                            label: 'Other',
+                            children: [
+                                {
+                                    key: '31',
+                                    icon: <MdAddCircleOutline />,
+                                    label: 'List Manufacturer',
+                                    onClick: () => navigate('/manufacturers/list'),
+                                },
+                                {
+                                    key: '32',
+                                    icon: <MdFormatListBulleted />,
+                                    label: 'List countries',
+                                    onClick: () => navigate('/countries/list'),
+                                },
+                                {
+                                    key: '33',
+                                    icon: <MdFormatListBulleted />,
+                                    label: 'List Provinces',
+                                    onClick: () => navigate('/provinces/list'),
+                                },
+                            ],
+                        },
+                        {
+                            key: '4',
                             icon: <MdOutlineInventory2 />,
                             label: 'Products',
                         },
                         {
-                            key: '4',
+                            key: '5',
                             icon: <MdOutlineShoppingBag />,
                             label: 'Orders',
                         },
                         {
-                            key: '5',
+                            key: '6',
                             icon: <MdRequestPage />,
                             label: 'Invoices',
                         },
                         {
-                            key: '6',
+                            key: '7',
                             icon: <MdInsertChartOutlined />,
                             label: 'Statistics',
                         },
                         {
-                            key: '7',
+                            key: '8',
                             icon: <MdManageAccounts />,
                             label: 'Profiles',
                         },
                         {
-                            key: '8',
+                            key: '9',
                             icon: <MdSupervisorAccount />,
                             label: 'Accounts',
                         },
                         {
-                            key: '9',
+                            key: '10',
                             icon: <MdLogout />,
                             label: 'Logout',
                         },
@@ -176,6 +202,7 @@ function DashboardPage() {
                             <Route path="/categories/add" element={<AddOrEditCategory key="a" />}></Route>
                             <Route path="/categories/update/:id" element={<AddOrEditCategory key="u" />}></Route>
                             <Route path="/categories/list" element={<ListCategory />}></Route>
+                            <Route path="/manufacturers/list" element={<ListManufacturers />}></Route>
                         </Routes>
                         <Outlet></Outlet>
                     </div>

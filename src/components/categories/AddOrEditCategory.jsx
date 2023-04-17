@@ -38,10 +38,9 @@ class AddOrEditCategory extends Component {
         }
         return null;
     }
-
     confirmUpdate = () => {
         console.log('update category');
-        this.formRef.current.submit();
+        //this.formRef.current.submit();
     };
 
     onSubmitForm = (values) => {
