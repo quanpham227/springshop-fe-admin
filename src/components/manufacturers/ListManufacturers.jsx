@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { propTypes } from 'prop-types';
 import ContentHeader from '../common/ContentHeader';
 import ManufacturerList from './ManufacturerList';
 import withRouter from '../../helpers/withRouter';
@@ -19,6 +18,7 @@ class ListManufacturers extends Component {
 
     onCreate = (values) => {
         console.log(values);
+        this.props.insertManufacturer(values);
     };
     render() {
         const { navigate } = this.props.router;
@@ -56,13 +56,10 @@ class ListManufacturers extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    manufacturers: state.manufacturerReducer.manufacturers,
-    isLoading: state.commonReducer.isLoading,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
     insertManufacturer,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListManufacturers));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ListManufacturers));
