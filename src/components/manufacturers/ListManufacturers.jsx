@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { propTypes } from 'prop-types';
 import ContentHeader from '../common/ContentHeader';
 import ManufacturerList from './ManufacturerList';
 import withRouter from '../../helpers/withRouter';
 import { Button, Col, Row } from 'antd';
 import ManufacturerForm from './ManufacturerForm';
+import { connect } from 'react-redux';
+import { insertManufacturer } from '../../redux/actions/ManufacturerAction';
 
 class ListManufacturers extends Component {
     constructor(props) {
@@ -53,4 +56,13 @@ class ListManufacturers extends Component {
     }
 }
 
-export default withRouter(ListManufacturers);
+const mapStateToProps = (state) => ({
+    manufacturers: state.manufacturerReducer.manufacturers,
+    isLoading: state.commonReducer.isLoading,
+});
+
+const mapDispatchToProps = {
+    insertManufacturer,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListManufacturers));

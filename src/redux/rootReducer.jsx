@@ -5,8 +5,8 @@ import manufacturerReducer from './reducers/ManufacturerReducer';
 
 const rootReducer = combineReducers({
     categoryReducer: categoryReducer,
-    commonReducer: commonReducer,
-    manufacturerReducer: manufacturerReducer,
+    commonReducer,
+    manufacturerReducer,
 });
 
 export default rootReducer;

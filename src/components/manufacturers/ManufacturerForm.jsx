@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Image, Input, Modal, Radio, Upload } from 'antd';
+import { Button, Divider, Form, Image, Input, Modal, Upload } from 'antd';
 import React, { Component, createRef } from 'react';
 
 class ManufacturerForm extends Component {
@@ -39,7 +39,7 @@ class ManufacturerForm extends Component {
         return (
             <Modal
                 open={open}
-                title="New Manufacturer"
+                title="Create a new Manufacturer"
                 okText="Create"
                 cancelText="Cancel"
                 onCancel={onCancel}

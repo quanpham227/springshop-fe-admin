@@ -1,7 +1,7 @@
 import ManufacturerService from '../../services/ManufacturerService';
 import { COMMON_ERROR_SET, COMMON_LOADING_SET, COMMON_MESSAGE_SET, MANUFACTURER_SET } from './actionTypes';
 
-export const insertCategory = (manufacturer) => async (dispatch) => {
+export const insertManufacturer = (manufacturer) => async (dispatch) => {
     const service = new ManufacturerService();
 
     try {
