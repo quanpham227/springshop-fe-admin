@@ -1,5 +1,6 @@
 import {
     MANUFACTURERS_SET,
+    MANUFACTURER_APPEND,
     MANUFACTURER_DELETE,
     MANUFACTURER_SET,
     MANUFACTURER_STATE_CLEAR,
@@ -16,6 +17,8 @@ const manufacturerReducer = (state = initialState, { type, payload }) => {
             return { ...state, manufacturer: payload };
         case MANUFACTURERS_SET:
             return { ...state, manufacturers: payload };
+        case MANUFACTURER_APPEND:
+            return { ...state, manufacturers: [payload, ...state.manufacturers] };
         case MANUFACTURER_DELETE:
             return {
                 ...state,

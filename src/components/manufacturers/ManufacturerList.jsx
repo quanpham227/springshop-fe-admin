@@ -4,6 +4,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import ColumnGroup from 'antd/es/table/ColumnGroup';
 import React, { Component } from 'react';
 import Column from 'antd/lib/table/Column';
+import ManufacturerService from '../../services/ManufacturerService';
 
 class ManufacturerList extends Component {
     render() {
@@ -19,7 +20,10 @@ class ManufacturerList extends Component {
                         align="center"
                         render={(_, record) => (
                             <Space size="middle">
-                                <Image width="100%" src={record.log}></Image>
+                                <Image
+                                    width="100%"
+                                    src={ManufacturerService.getManufacturerLogoUrl(record.logo)}
+                                ></Image>
                             </Space>
                         )}
                     ></Column>

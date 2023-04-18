@@ -98,7 +98,7 @@ function DashboardPage() {
                         {
                             key: '3',
                             icon: <MdCategory />,
-                            label: 'Other',
+                            label: 'Manufacturers',
                             children: [
                                 {
                                     key: '31',

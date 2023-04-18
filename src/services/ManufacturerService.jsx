@@ -24,4 +24,7 @@ export default class ManufacturerService {
     updateManufacturer = async (id, manufacturer) => {
         return await axios.patch(API_MANUFACTURER + '/' + id, manufacturer);
     };
+    static getManufacturerLogoUrl = (filename) => {
+        return API_MANUFACTURER + '/logo/' + filename;
+    };
 }
