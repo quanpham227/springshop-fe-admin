@@ -22,7 +22,12 @@ export default class ManufacturerService {
         return await axios.get(API_MANUFACTURER + '/' + id + '/get');
     };
     updateManufacturer = async (id, manufacturer) => {
-        return await axios.patch(API_MANUFACTURER + '/' + id, manufacturer);
+        let formData = new FormData();
+        formData.append('name', manufacturer.name);
+        if (manufacturer.logoFile[0].originFileObj) {
+            formData.append('logoFile', manufacturer.logoFile[0].originFileObj);
+        }
+        return await axios.patch(API_MANUFACTURER + '/' + id, formData);
     };
     static getManufacturerLogoUrl = (filename) => {
         return API_MANUFACTURER + '/logo/' + filename;

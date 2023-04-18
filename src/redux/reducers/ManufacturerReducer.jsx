@@ -4,6 +4,7 @@ import {
     MANUFACTURER_DELETE,
     MANUFACTURER_SET,
     MANUFACTURER_STATE_CLEAR,
+    MANUFACTURER_UPDATE,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -23,6 +24,12 @@ const manufacturerReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 manufacturers: state.manufacturers.filter((item) => item.id !== payload),
+            };
+        case MANUFACTURER_UPDATE:
+            const newManufacturers = state.manufacturers.filter((item) => item.id !== payload.id);
+            return {
+                ...state,
+                manufacturers: [payload, ...newManufacturers],
             };
         case MANUFACTURER_STATE_CLEAR:
             return {

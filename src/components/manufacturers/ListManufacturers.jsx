@@ -5,7 +5,12 @@ import withRouter from '../../helpers/withRouter';
 import { Button, Col, Modal, Row } from 'antd';
 import ManufacturerForm from './ManufacturerForm';
 import { connect } from 'react-redux';
-import { insertManufacturer, getManufacturers, deleteManufacturer } from '../../redux/actions/ManufacturerAction';
+import {
+    insertManufacturer,
+    getManufacturers,
+    deleteManufacturer,
+    updateManufacturer,
+} from '../../redux/actions/ManufacturerAction';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 class ListManufacturers extends Component {
@@ -14,7 +19,7 @@ class ListManufacturers extends Component {
 
         this.state = {
             open: false,
-            manufacturer: {},
+            manufacturer: { id: '', name: '', logo: '' },
         };
     }
     componentDidMount = () => {
@@ -24,9 +29,18 @@ class ListManufacturers extends Component {
 
     onCreate = (values) => {
         console.log(values);
-        this.props.insertManufacturer(values);
+
+        if (values.id) {
+            this.props.updateManufacturer(values);
+        } else {
+            this.props.insertManufacturer(values);
+        }
+        this.setState({ ...this.state, manufacturer: {}, open: false });
     };
 
+    onEdit = (value) => {
+        this.setState({ ...this.state, manufacturer: value, open: true });
+    };
     deleteManufacturer = () => {
         this.props.deleteManufacturer(this.state.manufacturer.id);
         console.log('delete manufacturer');
@@ -69,9 +83,14 @@ class ListManufacturers extends Component {
                         </Button>
                     </Col>
                 </Row>
-                <ManufacturerList dataSource={manufacturers} onDeleteConfirm={this.onDeleteConfirm} />
+                <ManufacturerList
+                    dataSource={manufacturers}
+                    onDeleteConfirm={this.onDeleteConfirm}
+                    onEdit={this.onEdit}
+                />
 
                 <ManufacturerForm
+                    manufacturer={this.state.manufacturer}
                     open={open}
                     onCreate={this.onCreate}
                     onCancel={() => {
@@ -91,6 +110,7 @@ const mapDispatchToProps = {
     insertManufacturer,
     getManufacturers,
     deleteManufacturer,
+    updateManufacturer,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ListManufacturers));

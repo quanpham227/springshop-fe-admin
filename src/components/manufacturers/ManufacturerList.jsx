@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Button, Image, Space, Table } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import ColumnGroup from 'antd/es/table/ColumnGroup';
@@ -9,6 +8,7 @@ import ManufacturerService from '../../services/ManufacturerService';
 class ManufacturerList extends Component {
     render() {
         const { dataSource, onEdit, onDeleteConfirm } = this.props;
+
         return (
             <Table dataSource={dataSource} size="small" rowKey="id">
                 <ColumnGroup>

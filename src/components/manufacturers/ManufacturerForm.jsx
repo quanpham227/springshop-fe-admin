@@ -1,5 +1,6 @@
 import { Button, Divider, Form, Image, Input, Modal, Upload } from 'antd';
 import React, { Component, createRef } from 'react';
+import ManufacturerService from '../../services/ManufacturerService';
 
 class ManufacturerForm extends Component {
     form = createRef();
@@ -35,12 +36,27 @@ class ManufacturerForm extends Component {
 
     render() {
         const { open, onCreate, onCancel } = this.props;
-        const { manufacturer } = this.state;
+        const { manufacturer } = this.props;
+
+        let title = 'Create a new Manufacturer';
+        let okText = 'Create';
+        if (manufacturer.id) {
+            title = 'Update Manufacturer';
+            okText = 'Update';
+        }
+
+        const logoUrl = ManufacturerService.getManufacturerLogoUrl(manufacturer.logo);
+
+        const initialLogo = {
+            url: logoUrl,
+            uid: manufacturer.logo,
+        };
+
         return (
             <Modal
                 open={open}
-                title="Create a new Manufacturer"
-                okText="Create"
+                title={title}
+                okText={okText}
                 cancelText="Cancel"
                 onCancel={onCancel}
                 onOk={() => {
@@ -62,6 +78,7 @@ class ManufacturerForm extends Component {
                     initialValues={{
                         modifier: 'public',
                     }}
+                    key={'f' + manufacturer.id + manufacturer.name}
                 >
                     <Form.Item label="Manufacturer ID" name="id" initialValue={manufacturer.id}>
                         <Input readOnly></Input>
@@ -77,7 +94,7 @@ class ManufacturerForm extends Component {
                     <Form.Item
                         label="Logo"
                         name="logoFile"
-                        initialValue={[{ url: '' }]}
+                        initialValue={[initialLogo]}
                         rules={[{ required: true }]}
                         valuePropName="fileList"
                         getValueFromEvent={this.normFile}
