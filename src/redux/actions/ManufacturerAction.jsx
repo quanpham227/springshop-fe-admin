@@ -7,6 +7,7 @@ import {
     MANUFACTURER_APPEND,
     MANUFACTURER_DELETE,
     MANUFACTURER_SET,
+    MANUFACTURER_SET_PAGEABLE,
     MANUFACTURER_UPDATE,
 } from './actionTypes';
 
@@ -198,6 +199,56 @@ export const deleteManufacturer = (id) => async (dispatch) => {
             dispatch({
                 type: COMMON_MESSAGE_SET,
                 payload: response.data,
+            });
+        } else {
+            dispatch({
+                type: COMMON_ERROR_SET,
+                payload: response.message,
+            });
+        }
+    } catch (error) {
+        dispatch({
+            type: COMMON_ERROR_SET,
+            payload: error.response.data ? error.response.data.message : error.message,
+        });
+    }
+    dispatch({
+        type: COMMON_LOADING_SET,
+        payload: false,
+    });
+};
+
+export const getManufacturersByName = (params) => async (dispatch) => {
+    const service = new ManufacturerService();
+
+    try {
+        console.log('get Manufacturers By Name');
+        dispatch({
+            type: COMMON_LOADING_SET,
+            payload: true,
+        });
+        const response = await service.getManufacturersByName(params);
+
+        console.log(response);
+
+        if (response.status === 200) {
+            dispatch({
+                type: MANUFACTURERS_SET,
+                payload: response.data.content,
+            });
+            const { size, totalPages, totalElements, pageable } = response.data;
+            console.log(totalElements, totalPages);
+            const pagination = {
+                size: size,
+                page: pageable.pageNumber,
+                query: params.query,
+                totalPages: totalPages,
+                totalElements: totalElements,
+            };
+
+            dispatch({
+                type: MANUFACTURER_SET_PAGEABLE,
+                payload: pagination,
             });
         } else {
             dispatch({

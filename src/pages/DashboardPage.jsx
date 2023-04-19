@@ -1,5 +1,5 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Layout, Menu, message, Row, theme } from 'antd';
+import { Affix, Avatar, Col, Layout, Menu, message, Row, theme } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
     MdOutlineHome,
@@ -47,13 +47,24 @@ function DashboardPage() {
             dispatch(setError(''));
             message.error(err);
         }
-    }, [msg, err]);
+    }, [msg, err, dispatch]);
 
     const {
         token: { colorBgContainer },
     } = theme.useToken();
 
     const siteLayoutStyle = { marginLeft: marginLeft };
+
+    const handleContentScroll = (e) => {
+        const content = e.target;
+        const scrollHeight = content.scrollHeight;
+        const clientHeight = content.clientHeight;
+        const scrollTop = content.scrollTop;
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            content.style.height = `${scrollHeight}px`;
+        }
+    };
     return (
         <Layout>
             <Sider
@@ -159,42 +170,46 @@ function DashboardPage() {
                 />
             </Sider>
             <Layout className="site-layout" style={siteLayoutStyle}>
-                <Header
-                    className="site-layout-background"
-                    style={{
-                        padding: 0,
-                        right: 16,
-                        left: marginLeft + 16,
-                        top: 0,
-                        position: 'fixed',
-                        height: 70,
-                    }}
-                >
-                    <Row>
-                        <Col md={18}>
-                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                                className: 'trigger',
-                                onClick: () => {
-                                    const sts = !collapsed;
-                                    setCollapsed(sts);
-                                    setMarginLeft(sts ? 80 : 200);
-                                },
-                            })}
-                        </Col>
-                        <Col md={6}>
-                            <div>
-                                <Avatar size="default" icon={<UserOutlined></UserOutlined>}></Avatar> Pham Hong Quan
-                            </div>
-                        </Col>
-                    </Row>
-                </Header>
+                <Affix offsetTop={0}>
+                    <Header
+                        className="site-layout-background"
+                        style={{
+                            padding: 0,
+                            right: 16,
+                            left: marginLeft + 16,
+                            top: 0,
+                            position: 'fixed',
+                            height: 70,
+                        }}
+                    >
+                        <Row>
+                            <Col md={18}>
+                                {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                                    className: 'trigger',
+                                    onClick: () => {
+                                        const sts = !collapsed;
+                                        setCollapsed(sts);
+                                        setMarginLeft(sts ? 80 : 200);
+                                    },
+                                })}
+                            </Col>
+                            <Col md={6}>
+                                <div>
+                                    <Avatar size="default" icon={<UserOutlined></UserOutlined>}></Avatar> Pham Hong Quan
+                                </div>
+                            </Col>
+                        </Row>
+                    </Header>
+                </Affix>
                 <Content
                     style={{
                         margin: '80px 24px 16px 24px',
-                        padding: 24,
-                        minHeight: 280,
+                        padding: 20,
+                        height: '100%',
+                        overflow: 'auto',
                         background: colorBgContainer,
                     }}
+                    onScroll={handleContentScroll}
                 >
                     <div className="content-panel">
                         <Routes>

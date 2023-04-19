@@ -32,4 +32,8 @@ export default class ManufacturerService {
     static getManufacturerLogoUrl = (filename) => {
         return API_MANUFACTURER + '/logo/' + filename;
     };
+
+    getManufacturersByName = async (params) => {
+        return await axios.get(API_MANUFACTURER + '/find', { params });
+    };
 }

@@ -10,7 +10,7 @@ class ManufacturerList extends Component {
         const { dataSource, onEdit, onDeleteConfirm } = this.props;
 
         return (
-            <Table dataSource={dataSource} size="small" rowKey="id">
+            <Table dataSource={dataSource} size="small" rowKey="id" pagination={false}>
                 <ColumnGroup>
                     <Column
                         title="Logo"

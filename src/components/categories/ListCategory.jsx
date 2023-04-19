@@ -91,7 +91,7 @@ class ListCategory extends Component {
         return (
             <>
                 <ContentHeader navigate={navigate} title="List Categories" className="site-page-header"></ContentHeader>
-                <Table dataSource={categories.categories} size="small" rowKey="id">
+                <Table dataSource={categories} size="small" rowKey="id">
                     <ColumnGroup>
                         <Column
                             title="Category ID"
