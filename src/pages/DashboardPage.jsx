@@ -6,7 +6,6 @@ import {
     MdCategory,
     MdFormatListBulleted,
     MdAddCircleOutline,
-    MdOutlineInventory2,
     MdOutlineShoppingBag,
     MdRequestPage,
     MdInsertChartOutlined,
@@ -20,6 +19,7 @@ import AddOrEditCategory from '../components/categories/AddOrEditCategory';
 import ListCategory from '../components/categories/ListCategory';
 import Home from '../components/home/Home';
 import ListManufacturers from '../components/manufacturers/ListManufacturers';
+import AddOrUpdateProduct from '../components/products/AddOrUpdateProduct';
 import UploadImage from '../components/products/UploadImage';
 import { setError, setMessage } from '../redux/actions/commonAction';
 
@@ -240,6 +240,7 @@ function DashboardPage() {
                             <Route path="/categories/list" element={<ListCategory />}></Route>
                             <Route path="/manufacturers/list" element={<ListManufacturers />}></Route>
                             <Route path="/products/upload" element={<UploadImage />}></Route>
+                            <Route path="/products/add" element={<AddOrUpdateProduct />}></Route>
                         </Routes>
                         <Outlet></Outlet>
                     </div>
