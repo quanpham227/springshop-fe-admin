@@ -3,6 +3,8 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Button, Col, DatePicker, Divider, Form, Input, Row, Select, Upload } from 'antd';
 import React, { Component } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 class ProductForm extends Component {
     form = React.createRef();
@@ -92,7 +94,7 @@ class ProductForm extends Component {
                     <Row>
                         <Col md={24}>
                             <Form.Item label="Brief" name="brief" initialValue={product.brief}>
-                                <Input></Input>
+                                <ReactQuill theme="snow"></ReactQuill>
                             </Form.Item>
                         </Col>
                     </Row>
