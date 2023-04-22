@@ -23,8 +23,15 @@ class ListManufacturers extends Component {
             manufacturer: { id: '', name: '', logo: '' },
         };
     }
-    componentDidMount = () => {
-        this.props.getManufacturers();
+    componentDidMount = (pageNumber, pageSize) => {
+        const { pagination } = this.props;
+        const params = {
+            query: pagination.query,
+            page: pageNumber - 1,
+            size: pageSize,
+        };
+        this.props.getManufacturersByName(params);
+        //this.props.getManufacturers();
         console.log('did mount');
     };
 
@@ -99,6 +106,7 @@ class ListManufacturers extends Component {
         const { open } = this.state;
 
         const { manufacturers, pagination } = this.props;
+        console.log(pagination.totalElements);
         return (
             <>
                 <ContentHeader
@@ -143,8 +151,7 @@ class ListManufacturers extends Component {
                             //onShowSizeChange={this.onShowSizeChange}
                             onChange={this.onChange}
                             showSizeChanger="true"
-                            totalPages={pagination.totalPages}
-                        ></Pagination>
+                        />
                     </Col>
                 </Row>
                 <ManufacturerForm

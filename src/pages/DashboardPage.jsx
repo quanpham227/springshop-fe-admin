@@ -1,4 +1,4 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import { Affix, Avatar, Col, Layout, Menu, message, Row, theme } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
@@ -20,6 +20,7 @@ import AddOrEditCategory from '../components/categories/AddOrEditCategory';
 import ListCategory from '../components/categories/ListCategory';
 import Home from '../components/home/Home';
 import ListManufacturers from '../components/manufacturers/ListManufacturers';
+import UploadImage from '../components/products/UploadImage';
 import { setError, setMessage } from '../redux/actions/commonAction';
 
 import './DashboardPage.css';
@@ -133,8 +134,28 @@ function DashboardPage() {
                         },
                         {
                             key: '4',
-                            icon: <MdOutlineInventory2 />,
+                            icon: <PieChartOutlined />,
                             label: 'Products',
+                            children: [
+                                {
+                                    key: '41',
+                                    icon: <PlusOutlined />,
+                                    label: 'Upload Images',
+                                    onClick: () => navigate('/products/upload'),
+                                },
+                                {
+                                    key: '42',
+                                    icon: <MdFormatListBulleted />,
+                                    label: 'Add Product',
+                                    onClick: () => navigate('/products/add'),
+                                },
+                                {
+                                    key: '43',
+                                    icon: <MdFormatListBulleted />,
+                                    label: 'List Products',
+                                    onClick: () => navigate('/products/list'),
+                                },
+                            ],
                         },
                         {
                             key: '5',
@@ -218,6 +239,7 @@ function DashboardPage() {
                             <Route path="/categories/update/:id" element={<AddOrEditCategory key="u" />}></Route>
                             <Route path="/categories/list" element={<ListCategory />}></Route>
                             <Route path="/manufacturers/list" element={<ListManufacturers />}></Route>
+                            <Route path="/products/upload" element={<UploadImage />}></Route>
                         </Routes>
                         <Outlet></Outlet>
                     </div>
