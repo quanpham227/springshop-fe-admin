@@ -1,15 +1,24 @@
 import { UploadOutlined } from '@ant-design/icons';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Button, Col, DatePicker, Divider, Form, Input, Row, Select, Upload } from 'antd';
 import React, { Component } from 'react';
 
 class ProductForm extends Component {
     form = React.createRef();
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            descriptionCKData: '',
+        };
+    }
     goNext = () => {
         this.props.goNext({});
     };
     render() {
         const { product } = this.props;
+        const { descriptionCKData } = this.state;
         return (
             <>
                 <Form layout="vertical" className="form" size="middle" ref={this.form}>
@@ -89,8 +98,20 @@ class ProductForm extends Component {
                     </Row>
                     <Row>
                         <Col md={24}>
-                            <Form.Item label="Description" name="description" initialValue={product.description}>
-                                <Input></Input>
+                            <Form.Item label="Description" name="description" initialValue={descriptionCKData}>
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={descriptionCKData}
+                                    onReady={(editor) => {
+                                        editor.editing.view.change((write) => {
+                                            write.setStyle('height', '200px', editor.editing.view.document.getRoot());
+                                        });
+                                    }}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        this.setState({ ...this.state, descriptionCKData: data });
+                                    }}
+                                ></CKEditor>
                             </Form.Item>
                         </Col>
                     </Row>
