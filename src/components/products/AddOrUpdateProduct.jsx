@@ -1,4 +1,5 @@
-import { Col, Divider, Row, Steps } from 'antd';
+import { SaveOutlined } from '@ant-design/icons';
+import { Button, Col, Divider, Row, Space, Steps } from 'antd';
 import React, { Component } from 'react';
 import withRouter from '../../helpers/withRouter';
 import ContentHeader from '../common/ContentHeader';
@@ -20,10 +21,19 @@ class AddOrUpdateProduct extends Component {
         this.setState({ ...this.state, product: values, step: 1 });
     };
 
+    goPrevious = () => {
+        this.setState({ ...this.state, step: 0 });
+    };
+
+    saveProduct = () => {
+        console.log('save product');
+    };
+
     render() {
         const { navigate } = this.props.router;
         const { step } = this.state;
         let { title } = 'Add products';
+        const { product } = this.props;
 
         return (
             <>
@@ -31,10 +41,19 @@ class AddOrUpdateProduct extends Component {
 
                 <Row>
                     <Col md={24}>
-                        <Steps current={step}>
-                            <Step title="Basic Information" description="Fill basic Information"></Step>
-                            <Step title="Images" description="Choose the list of images"></Step>
-                        </Steps>
+                        <Steps
+                            current={step}
+                            items={[
+                                {
+                                    title: 'Basic Information',
+                                    description: 'Fill basic Information',
+                                },
+                                {
+                                    title: 'Images',
+                                    description: 'Choose the list of images',
+                                },
+                            ]}
+                        />
                     </Col>
                 </Row>
                 <Row>
@@ -48,7 +67,22 @@ class AddOrUpdateProduct extends Component {
                         {step === 1 && (
                             <>
                                 <Divider></Divider>
-                                <UploadImage></UploadImage>
+                                <Row>
+                                    <Col md={24}>
+                                        <UploadImage></UploadImage>
+                                        <Divider></Divider>
+                                        <div>
+                                            <Space>
+                                                <Button type="primary" onClick={this.goPrevious}>
+                                                    Previous
+                                                </Button>
+                                                <Button type="primary" onClick={this.saveProduct}>
+                                                    <SaveOutlined /> {product && product.id ? 'Update' : 'Save'}
+                                                </Button>
+                                            </Space>
+                                        </div>
+                                    </Col>
+                                </Row>
                             </>
                         )}
                     </Col>
