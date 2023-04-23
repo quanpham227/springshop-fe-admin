@@ -1,12 +1,13 @@
 import { SaveOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, Row, Space, Steps } from 'antd';
+import { Button, Col, Divider, message, Row, Space, Steps } from 'antd';
+import axios from 'axios';
 import React, { Component } from 'react';
 import withRouter from '../../helpers/withRouter';
+import CategoryService from '../../services/categoryService';
+import ManufacturerService from '../../services/ManufacturerService';
 import ContentHeader from '../common/ContentHeader';
 import ProductForm from './ProductForm';
 import UploadImage from './UploadImage';
-
-const { Step } = Steps;
 
 class AddOrUpdateProduct extends Component {
     constructor(props) {
@@ -29,9 +30,40 @@ class AddOrUpdateProduct extends Component {
         console.log('save product');
     };
 
+    componentDidMount = () => {
+        // axios
+        //     .get('http://localhost:8080/api/v1/manufacturers/finall')
+        //     .then((response) => {
+        //         this.setState({ manufacturers: response.data });
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        this.loadData();
+    };
+
+    loadData = async () => {
+        try {
+            const categoryService = new CategoryService();
+            const cateListResponse = await categoryService.getCategories();
+
+            const manufacturerService = new ManufacturerService();
+            const manufacturerListResponse = await manufacturerService.getManufacturers();
+
+            this.setState({
+                ...this.state,
+                categories: cateListResponse.data,
+                manufacturers: manufacturerListResponse.data,
+            });
+        } catch (error) {
+            console.log(error);
+            message.error('Error: ' + error);
+        }
+    };
+
     render() {
         const { navigate } = this.props.router;
-        const { step } = this.state;
+        const { step, categories, manufacturers } = this.state;
         let { title } = 'Add products';
         const { product } = this.props;
 
@@ -61,7 +93,12 @@ class AddOrUpdateProduct extends Component {
                         {step === 0 && (
                             <>
                                 <Divider></Divider>
-                                <ProductForm product={{}} goNext={this.goNext}></ProductForm>
+                                <ProductForm
+                                    product={{}}
+                                    goNext={this.goNext}
+                                    categories={categories}
+                                    manufacturers={manufacturers}
+                                ></ProductForm>
                             </>
                         )}
                         {step === 1 && (
