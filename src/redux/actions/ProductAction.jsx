@@ -1,5 +1,5 @@
 import ProductService from '../../services/productService';
-import { COMMON_ERROR_SET, COMMON_LOADING_SET, COMMON_MESSAGE_SET, PRODUCT_SET, PRODUCT__APPEND } from './actionTypes';
+import { COMMON_ERROR_SET, COMMON_LOADING_SET, COMMON_MESSAGE_SET, PRODUCT_SET } from './actionTypes';
 
 export const insertProduct = (product, navigate) => async (dispatch) => {
     const service = new ProductService();

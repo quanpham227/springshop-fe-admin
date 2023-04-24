@@ -22,6 +22,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { MdOutlineCategory } from 'react-icons/md';
 import ManufacturerService from '../../services/ManufacturerService';
+import ProductService from '../../services/productService';
+
 class ProductForm extends Component {
     form = React.createRef();
     constructor(props) {
@@ -29,31 +31,65 @@ class ProductForm extends Component {
 
         this.state = {
             descriptionCKData: '',
-            isChecked: false,
         };
-        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
-    handleCheckboxChange(e) {
-        this.setState({ isChecked: e.target.checked });
+
+    componentDidMount = () => {
+        this.setState({
+            ...this.state,
+            descriptionCKData: this.props.product.description,
+        });
+    };
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // hiển thị phần mô tả sp lên ckeditor
+        if (nextProps.product.description && !prevState.descriptionCKData) {
+            return {
+                ...prevState,
+                descriptionCKData: nextProps.product.description, // cập nhật lại giá trị của descriptionCKData trong state từ descrip của product và khi nào description thay đổi thì update
+            };
+        }
+        return null;
     }
     goNext = () => {
         this.form.current
             .validateFields()
             .then((values) => {
-                console.log(values);
-
                 const newValues = {
                     ...values,
                     description: this.state.descriptionCKData,
                     manufacturerDate: values.manufacturerDate.format('YYYY-MM-DD'),
-                    //image: values.image[0].fileName ? values.image[0] : values.image[0].response,
+                    image: values.image[0].fileName ? values.image[0] : values.image[0].response,
                 };
+
+                console.log(newValues);
                 this.props.goNext(newValues);
             })
             .catch((info) => {
                 console.log(info);
                 message.error('Data validation Error. Please check your input fields');
             });
+    };
+
+    handleImageRemoved = (info) => {
+        console.log('remove');
+
+        if (info.fileName) {
+            ProductService.deleteProductImage(info.fileName);
+        } else if (info.response && info.response.fileName) {
+            ProductService.deleteProductImage(info.response.fileName);
+        }
+    };
+
+    //chuuẩn hóa file để upload lên server (có thể tách ra 1 lớp vid được gọi nhiều lần)
+    normFile = (e) => {
+        if (Array.isArray(e)) {
+            return e;
+        }
+        if (e.fileList.length > 1) {
+            return [e.fileList[1]];
+        }
+        return e && e.fileList;
     };
 
     render() {
@@ -128,11 +164,9 @@ class ProductForm extends Component {
                                         name="isFeatured"
                                         hasFeedback
                                         initialValue={product.isFeatured}
+                                        valuePropName="checked"
                                     >
-                                        <Checkbox
-                                            checked={this.state.isChecked}
-                                            onChange={this.handleCheckboxChange}
-                                        ></Checkbox>
+                                        <Checkbox></Checkbox>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -149,10 +183,10 @@ class ProductForm extends Component {
                                 hasFeedback
                             >
                                 <Select placeholder="select product status">
-                                    <Select.Option value="Instock">In Stock</Select.Option>
+                                    <Select.Option value="InStock">In Stock</Select.Option>
                                     <Select.Option value="OutOfStock">Out Of Stock</Select.Option>
                                     <Select.Option value="Discountinued">Discountinued</Select.Option>
-                                    <Select.Option value="OnBackOrder">On BackOrder</Select.Option>
+                                    <Select.Option value="OnBackOrder">On Back Order</Select.Option>
                                 </Select>
                             </Form.Item>
                             <Form.Item
@@ -181,7 +215,7 @@ class ProductForm extends Component {
                                 <Select placeholder="select manufacturer" suffixIcon={<MdOutlineCategory />}>
                                     {manufacturers &&
                                         manufacturers.map((manufacturer) => (
-                                            <Select.Option value={manufacturer.id} key={manufacturer.id}>
+                                            <Select.Option value={manufacturer.id} key={'manu' + manufacturer.id}>
                                                 <Space size={'large'}>
                                                     <Image
                                                         src={ManufacturerService.getManufacturerLogoUrl(
@@ -217,9 +251,26 @@ class ProductForm extends Component {
                                 name="image"
                                 rules={[{ required: true }]}
                                 hasFeedback
-                                initialValue={product.image ? [{ ...product.image }] : []}
+                                initialValue={
+                                    product.image
+                                        ? [
+                                              {
+                                                  ...product.image,
+                                                  url: ProductService.getProductImageUrl(product.image.fileName),
+                                              },
+                                          ]
+                                        : []
+                                }
+                                valuePropName="fileList"
+                                getValueFromEvent={this.normFile}
                             >
-                                <Upload listType="picture" accept=".jpg,.png,.gif" maxCount={1}>
+                                <Upload
+                                    listType="picture"
+                                    accept=".jpg,.png,.gif"
+                                    maxCount={1}
+                                    onRemove={this.handleImageRemoved}
+                                    action={ProductService.getProductImageUploadUrl()}
+                                >
                                     <Button icon={<UploadOutlined />}></Button>
                                 </Upload>
                             </Form.Item>

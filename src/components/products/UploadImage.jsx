@@ -43,10 +43,12 @@ const UploadImage = (props) => {
         }
         if (status === 'done') {
             message.success(`${info.file.name} file uploaded successfully`);
-        } else {
+        } else if (status === 'remove') {
+            message.success(`${info.file.name} file is removed`);
+        } else if (status !== 'uploading') {
             message.error(`${info.file.name} file uploaded failed`);
         }
-        // props.onUploadFileList(fileList.slice());
+        props.onUpdateFileList(fileList.slice());
     };
 
     const handleRemove = (info) => {
