@@ -20,6 +20,7 @@ import ListCategory from '../components/categories/ListCategory';
 import Home from '../components/home/Home';
 import ListManufacturers from '../components/manufacturers/ListManufacturers';
 import AddOrUpdateProduct from '../components/products/AddOrUpdateProduct';
+import ListProducts from '../components/products/ListProducts';
 import UploadImage from '../components/products/UploadImage';
 import { setError, setMessage } from '../redux/actions/commonAction';
 
@@ -241,6 +242,7 @@ function DashboardPage() {
                             <Route path="/manufacturers/list" element={<ListManufacturers />}></Route>
                             <Route path="/products/upload" element={<UploadImage />}></Route>
                             <Route path="/products/add" element={<AddOrUpdateProduct />}></Route>
+                            <Route path="/products/list" element={<ListProducts />}></Route>
                         </Routes>
                         <Outlet></Outlet>
                     </div>
